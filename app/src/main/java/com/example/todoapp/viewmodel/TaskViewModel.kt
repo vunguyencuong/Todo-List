@@ -2,6 +2,7 @@ package com.example.todoapp.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
+import androidx.room.Query
 import com.example.todoapp.database.TaskDatabase
 import com.example.todoapp.database.TaskItem
 import com.example.todoapp.repository.TaskRepository
@@ -14,10 +15,13 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val repository : TaskRepository
 
     val getAllTasks: LiveData<List<TaskItem>>
+    val getAllPriorityTasks: LiveData<List<TaskItem>>
 
     init{
         repository = TaskRepository(taskDao)
         getAllTasks = repository.getALlTasks()
+        getAllPriorityTasks = repository.getAllPriorityTasks()
+
     }
 
     fun addTask(taskItem: TaskItem){
@@ -43,5 +47,12 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             repository.deleteAll()
         }
     }
+
+    fun searchDatabase(searchQuery: String) : LiveData<List<TaskItem>>{
+        return repository.searchDatabase(searchQuery)
+    }
+
+    fun readNotDoneData(): LiveData<MutableList<TaskItem>> = repository.readNotDoneData()
+
 
 }

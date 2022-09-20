@@ -13,4 +13,5 @@ data class TaskItem(
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "priority") var priority: Int,
     @ColumnInfo(name = "timestamp") var timestamp: Long,
+    @ColumnInfo(name = "isDone") var isDone: Boolean
 ) : Parcelable

@@ -39,12 +39,12 @@ class UpdateFragment : Fragment() {
 
                 val task_str = edtUpdateTask.text
                 val priority = spinnerUpdatePriorities.selectedItemPosition
-
                 val taskItem = TaskItem(
                     args.taskItem.tId,
                     task_str.toString(),
                     priority,
-                    args.taskItem.timestamp
+                    args.taskItem.timestamp,
+                    args.taskItem.isDone
                 )
 
                 viewModel.updateTask(taskItem)

@@ -1,6 +1,7 @@
 package com.example.todoapp.util
 
 import android.graphics.Color
+import android.graphics.Paint
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import java.security.Timestamp
@@ -28,4 +29,16 @@ fun setPriority(view: TextView, priority: Int) {
 @BindingAdapter("setTimestamp")
 fun setTimestamp(view: TextView, timestamp: Long){
     view.text = DateFormat.getInstance().format(timestamp)
+}
+
+@BindingAdapter("strikeThrough")
+fun TextView.strikeThrough(strikeThrough: Boolean) {
+//    this.paintFlags = this.paintFlags or
+//            if (strikeThrough) {
+//                Paint.STRIKE_THRU_TEXT_FLAG
+//            } else {
+//                Paint.STRIKE_THRU_TEXT_FLAG.inv()
+//            }
+    if(strikeThrough) this.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+    else this.paintFlags = 0
 }

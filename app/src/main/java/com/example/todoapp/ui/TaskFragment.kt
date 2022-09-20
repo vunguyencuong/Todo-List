@@ -1,18 +1,23 @@
 package com.example.todoapp.ui
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
+import com.example.todoapp.database.TaskItem
 import com.example.todoapp.databinding.FragmentTaskBinding
 import com.example.todoapp.viewmodel.TaskViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.play.core.tasks.Task
 
 
 class TaskFragment : Fragment() {
@@ -23,7 +28,7 @@ class TaskFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentTaskBinding.inflate(inflater)
 
         binding.lifecycleOwner = this
@@ -31,7 +36,10 @@ class TaskFragment : Fragment() {
 
         adapter = TaskAdapter(TaskClickListener { taskItem ->
             findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToUpdateFragment(taskItem))
-        })
+        }) {
+            viewModel.updateTask(it)
+
+        }
 
         viewModel.getAllTasks.observe(viewLifecycleOwner){
             adapter.submitList(it)
@@ -70,23 +78,57 @@ class TaskFragment : Fragment() {
             }
         }).attachToRecyclerView(binding.recyclerView)
         setHasOptionsMenu(true)
+
         return binding.root
     }
+
+
 
     @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.task_menu,menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText != null){
+                    runQuery(newText)
+                }
+                return true
+            }
+
+        })
+    }
+
+    fun runQuery(query: String){
+        val searchQuery = "%$query%"
+        viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { tasks ->
+            adapter.submitList(tasks)
+        }
     }
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
+            R.id.action_sort -> viewModel.getAllPriorityTasks.observe(viewLifecycleOwner) { tasks ->
+                adapter.submitList(tasks)
+            }
             R.id.action_delete_all-> deleteAllItem()
+            R.id.action_hide_completed_tasks ->hideCompletedTask()
         }
         return super.onOptionsItemSelected(item)
     }
 
+    private fun hideCompletedTask() {
+        viewModel.readNotDoneData().observe(viewLifecycleOwner){
+            adapter.submitList(it)
+        }
+    }
     private  fun deleteAllItem(){
         AlertDialog.Builder(requireContext())
             .setTitle("Delete All")
@@ -98,4 +140,6 @@ class TaskFragment : Fragment() {
                 dialog,_-> dialog.dismiss()
             }.create().show()
     }
+
+
 }
