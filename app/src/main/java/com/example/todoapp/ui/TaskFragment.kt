@@ -1,20 +1,16 @@
 package com.example.todoapp.ui
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
+import android.app.Application
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
-import com.example.todoapp.database.TaskItem
 import com.example.todoapp.databinding.FragmentTaskBinding
 import com.example.todoapp.viewmodel.TaskViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -22,8 +18,14 @@ import com.google.android.material.snackbar.Snackbar
 
 class TaskFragment : Fragment() {
 
-    private val viewModel: TaskViewModel by viewModels()
+    private val viewModel: TaskViewModel =
+        ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[TaskViewModel::class.java]
     private lateinit var adapter: TaskAdapter
+    private var isHidden = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,9 +127,9 @@ class TaskFragment : Fragment() {
     }
 
     private fun hideCompletedTask() {
-        viewModel.readNotDoneData().observe(viewLifecycleOwner){
-            adapter.submitList(it)
-        }
+        if(isHidden == 0) isHidden = 1
+        else isHidden = 0
+        viewModel.updateHidden(isHidden)
     }
     private  fun deleteAllItem(){
         AlertDialog.Builder(requireContext())

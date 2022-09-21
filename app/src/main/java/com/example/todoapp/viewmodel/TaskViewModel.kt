@@ -13,15 +13,25 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     private val taskDao = TaskDatabase.getDatabase(application).taskDao()
     private val repository : TaskRepository
+    private var isHidden = 0
 
-    val getAllTasks: LiveData<List<TaskItem>>
+    val getAllTasks: MutableLiveData<List<TaskItem>>
     val getAllPriorityTasks: LiveData<List<TaskItem>>
 
     init{
         repository = TaskRepository(taskDao)
-        getAllTasks = repository.getALlTasks()
+        getAllTasks = repository.getALlTasks(isHidden) as MutableLiveData<List<TaskItem>>
         getAllPriorityTasks = repository.getAllPriorityTasks()
 
+    }
+
+    fun updateHidden(isDone: Int){
+        isHidden = isDone
+        updateList()
+    }
+
+    fun updateList(){
+        getAllTasks.value = repository.getALlTasks(isHidden).value
     }
 
     fun addTask(taskItem: TaskItem){
@@ -51,8 +61,5 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun searchDatabase(searchQuery: String) : LiveData<List<TaskItem>>{
         return repository.searchDatabase(searchQuery)
     }
-
-    fun readNotDoneData(): LiveData<MutableList<TaskItem>> = repository.readNotDoneData()
-
 
 }

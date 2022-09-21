@@ -17,7 +17,7 @@ class TaskRepository(val taskDao: TaskDao) {
         taskDao.deleteAll()
     }
 
-    fun getALlTasks() : LiveData<List<TaskItem>> = taskDao.getAllTasks()
+    fun getALlTasks(isDone: Int) : LiveData<List<TaskItem>> = taskDao.getAllTasks(isDone)
 
     fun getAllPriorityTasks() : LiveData<List<TaskItem>> = taskDao.getAllPriorityTasks()
 
@@ -25,7 +25,6 @@ class TaskRepository(val taskDao: TaskDao) {
         return taskDao.searchDatabase(searchQuery)
     }
 
-    fun readNotDoneData(): LiveData<MutableList<TaskItem>> = taskDao.readNotDoneData()
 
 
 }

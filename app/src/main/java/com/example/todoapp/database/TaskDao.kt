@@ -20,8 +20,8 @@ interface TaskDao {
     @Query("DELETE FROM tasks_table")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM tasks_table  ORDER BY timestamp DESC")
-    fun getAllTasks(): LiveData<List<TaskItem>>
+    @Query("SELECT * FROM tasks_table where isDone = :isDone ORDER BY timestamp DESC")
+    fun getAllTasks(isDone : Int): LiveData<List<TaskItem>>
 
     @Query("select * from tasks_table  order by priority asc")
     fun getAllPriorityTasks(): LiveData<List<TaskItem>>
@@ -29,8 +29,7 @@ interface TaskDao {
     @Query("select * from tasks_table where title like :searchQuery order by timestamp desc")
     fun searchDatabase(searchQuery: String): LiveData<List<TaskItem>>
 
-    @Query("select * from tasks_table where isDone = 0")
-    fun readNotDoneData(): LiveData<MutableList<TaskItem>>
+
 
 
 }
