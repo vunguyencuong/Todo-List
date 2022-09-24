@@ -1,27 +1,42 @@
 package com.example.todoapp.ui
 
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.todoapp.R
+import com.example.todoapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var navController: NavController
+    private  lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-       // setupActionBarWithNavController(findNavController(R.id.nav_host_fragment))
+        binding = ActivityMainBinding.inflate(layoutInflater)
+      //  setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+        setNavigationBar()
 
     }
 
-/*
-    override fun onSupportNavigateUp(): Boolean {
 
-        val navController = findNavController(R.id.nav_host_fragment)
+    private fun setNavigationBar(){
+        navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
 
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.taskFragment,
+                R.id.addFragment,
+                R.id.updateFragment
+            )
+        )
+        setupActionBarWithNavController(navController,appBarConfiguration)
     }
-*/
 
 }

@@ -10,8 +10,8 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "tasks_table")
 data class TaskItem(
     @PrimaryKey(autoGenerate = true) var tId: Int,
-    @ColumnInfo(name = "title") var title: String,
-    @ColumnInfo(name = "priority") var priority: Int,
-    @ColumnInfo(name = "timestamp") var timestamp: Long,
-    @ColumnInfo(name = "isDone") var isDone: Boolean
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "priority") val priority: Int,
+    @ColumnInfo(name = "timestamp") val timestamp: Long,
+    @ColumnInfo(name = "isDone") var isDone: Int
 ) : Parcelable

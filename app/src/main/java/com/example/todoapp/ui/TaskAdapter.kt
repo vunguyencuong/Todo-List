@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.database.TaskItem
 import com.example.todoapp.databinding.ItemLayoutBinding
 import com.example.todoapp.util.strikeThrough
-import com.google.android.play.core.tasks.Task
+
 
 class TaskAdapter(val clickListener: TaskClickListener, val onClickDone:(TaskItem)-> Unit): ListAdapter<TaskItem, TaskAdapter.ViewHolder>(TaskDiffCallback) {
 
@@ -28,7 +28,8 @@ class TaskAdapter(val clickListener: TaskClickListener, val onClickDone:(TaskIte
             binding.taskItem = taskItem
             binding.clickListener = clickListener
             binding.executePendingBindings()
-            binding.checkDone.isChecked = taskItem.isDone
+            if(binding.checkDone.isChecked) taskItem.isDone = 1
+            else taskItem.isDone = 0
         }
 
     }
@@ -41,30 +42,36 @@ class TaskAdapter(val clickListener: TaskClickListener, val onClickDone:(TaskIte
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current,clickListener)
+        //holder.binding.checkDone.setOnCheckedChangeListener { _, b ->
+//            if(b){
+//                current.isDone = 1
+//                holder.binding.taskTitle.strikeThrough(true)
+//            } else{
+//                current.isDone = 0
+//                holder.binding.taskTitle.strikeThrough(false)
+//            }
+//
+//            onClickDone(current)
+//        }
+
         holder.binding.checkDone.setOnClickListener { view ->
             if((view as CompoundButton).isChecked){
-                current.isDone = true
-                sendData(current)
-                notifyItemChanged(position)
+                current.isDone = 1
+                holder.binding.taskTitle.strikeThrough(true)
             } else{
-                current.isDone = false
-                sendData(current)
-                notifyItemChanged(position)
+                current.isDone = 0
+                holder.binding.taskTitle.strikeThrough(false)
             }
+            onClickDone(current)
         }
-        if(holder.binding.checkDone.isChecked){
-            holder.binding.taskTitle.strikeThrough(true)
-        } else holder.binding.taskTitle.strikeThrough(false)
 
 
     }
 
 
-    private fun sendData(taskItem: TaskItem){
-        onClickDone(taskItem)
+    fun setData(tasks : List<TaskItem>){
+        submitList(tasks.toList())
     }
-
-
 
 
 }

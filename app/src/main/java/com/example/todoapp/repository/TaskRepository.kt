@@ -17,11 +17,11 @@ class TaskRepository(val taskDao: TaskDao) {
         taskDao.deleteAll()
     }
 
-    fun getALlTasks(isDone: Int) : LiveData<List<TaskItem>> = taskDao.getAllTasks(isDone)
+    fun getALlTasks(isDone: Int) : List<TaskItem> = taskDao.getAllTasks(isDone)
 
-    fun getAllPriorityTasks() : LiveData<List<TaskItem>> = taskDao.getAllPriorityTasks()
+    fun getAllPriorityTasks() : List<TaskItem> = taskDao.getAllPriorityTasks()
 
-    fun searchDatabase(searchQuery: String) : LiveData<List<TaskItem>>{
+    fun searchDatabase(searchQuery: String) : List<TaskItem>{
         return taskDao.searchDatabase(searchQuery)
     }
 

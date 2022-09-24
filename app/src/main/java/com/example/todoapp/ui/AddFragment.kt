@@ -43,7 +43,7 @@ class AddFragment : Fragment() {
 
                 val title_str = edtTask.text.toString()
                 val priority = spinnerPriorities.selectedItemPosition
-                val isDone = false
+                val isDone = 0
                 val taskItem = TaskItem(
                     0,
                     title_str,
@@ -60,6 +60,8 @@ class AddFragment : Fragment() {
 
         return binding.root
     }
+
+
 
 
 

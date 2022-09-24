@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -18,46 +19,35 @@ import com.google.android.material.snackbar.Snackbar
 
 class TaskFragment : Fragment() {
 
-    private val viewModel: TaskViewModel =
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[TaskViewModel::class.java]
+    private lateinit var viewModel: TaskViewModel
+    private lateinit var binding: FragmentTaskBinding
     private lateinit var adapter: TaskAdapter
     private var isHidden = 0
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val binding = FragmentTaskBinding.inflate(inflater)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setUpViewModel()
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        adapter = TaskAdapter(TaskClickListener { taskItem ->
-            findNavController().navigate(TaskFragmentDirections.actionTaskFragmentToUpdateFragment(taskItem))
-        }) {
-            viewModel.updateTask(it)
+        setUpAdapter()
 
-        }
+        observing()
 
-        viewModel.getAllTasks.observe(viewLifecycleOwner){
-            adapter.submitList(it)
-        }
+        setOnClickListeners()
+
+        setOnSwipeItem()
 
 
-        binding.apply {
+    }
 
-            binding.recyclerView.adapter = adapter
 
-            btnAdd.setOnClickListener{
-                findNavController().navigate(R.id.action_taskFragment_to_addFragment)
-            }
-        }
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+    private fun TaskFragment.setOnSwipeItem() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -72,7 +62,7 @@ class TaskFragment : Fragment() {
                 viewModel.deleteTask(taskItem)
 
                 Snackbar.make(binding.root, "Deleted!", Snackbar.LENGTH_LONG).apply {
-                    setAction("Undo"){
+                    setAction("Undo") {
                         viewModel.addTask(taskItem)
                     }
                     show()
@@ -80,7 +70,46 @@ class TaskFragment : Fragment() {
             }
         }).attachToRecyclerView(binding.recyclerView)
         setHasOptionsMenu(true)
+    }
 
+    private fun setOnClickListeners() {
+        binding.btnAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_taskFragment_to_addFragment)
+        }
+    }
+
+    private fun observing() {
+        viewModel.taskLiveData.observe(viewLifecycleOwner) {
+            adapter.setData(it)
+        }
+    }
+
+    private fun setUpAdapter() {
+        val taskOnClickListener = TaskClickListener { taskItem ->
+            findNavController().navigate(
+                TaskFragmentDirections.actionTaskFragmentToUpdateFragment(taskItem)
+            )
+        }
+
+        adapter = TaskAdapter(taskOnClickListener) {
+            viewModel.updateTask(it)
+        }
+        binding.recyclerView.adapter = adapter
+    }
+
+    private fun setUpViewModel() {
+        viewModel =
+            ViewModelProvider(
+                this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+            )[TaskViewModel::class.java]
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentTaskBinding.inflate(inflater)
         return binding.root
     }
 
@@ -108,29 +137,40 @@ class TaskFragment : Fragment() {
     }
 
     fun runQuery(query: String){
-        val searchQuery = "%$query%"
-        viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { tasks ->
-            adapter.submitList(tasks)
-        }
+//        val searchQuery = "%$query%"
+//        viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { tasks ->
+//            adapter.submitList(tasks)
+//        }
     }
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.action_sort -> viewModel.getAllPriorityTasks.observe(viewLifecycleOwner) { tasks ->
-                adapter.submitList(tasks)
-            }
+            R.id.action_sort -> viewModel.sortTask()
+
             R.id.action_delete_all-> deleteAllItem()
-            R.id.action_hide_completed_tasks ->hideCompletedTask()
+            R.id.action_hide_completed_tasks ->hideCompletedTask(item)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun hideCompletedTask() {
-        if(isHidden == 0) isHidden = 1
-        else isHidden = 0
+    private fun hideCompletedTask(menuItem : MenuItem) {
+        if(isHidden == 0) {
+            isHidden = 1
+            menuItem.isChecked = true
+
+        }else {
+            isHidden = 0
+            menuItem.isChecked = false
+        }
         viewModel.updateHidden(isHidden)
     }
+
+//    override fun onStart() {
+//        (activity as MainActivity).supportActionBar.i
+//    }
+
+
     private  fun deleteAllItem(){
         AlertDialog.Builder(requireContext())
             .setTitle("Delete All")
@@ -142,6 +182,5 @@ class TaskFragment : Fragment() {
                 dialog,_-> dialog.dismiss()
             }.create().show()
     }
-
 
 }

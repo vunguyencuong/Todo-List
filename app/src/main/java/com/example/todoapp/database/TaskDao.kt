@@ -21,15 +21,13 @@ interface TaskDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM tasks_table where isDone = :isDone ORDER BY timestamp DESC")
-    fun getAllTasks(isDone : Int): LiveData<List<TaskItem>>
+    fun getAllTasks(isDone : Int): List<TaskItem>
 
     @Query("select * from tasks_table  order by priority asc")
-    fun getAllPriorityTasks(): LiveData<List<TaskItem>>
+    fun getAllPriorityTasks(): List<TaskItem>
 
     @Query("select * from tasks_table where title like :searchQuery order by timestamp desc")
-    fun searchDatabase(searchQuery: String): LiveData<List<TaskItem>>
-
-
+    fun searchDatabase(searchQuery: String): List<TaskItem>
 
 
 }
