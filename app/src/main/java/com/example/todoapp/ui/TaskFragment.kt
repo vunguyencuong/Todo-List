@@ -121,27 +121,22 @@ class TaskFragment : Fragment() {
         inflater.inflate(R.menu.task_menu,menu)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
+        menu.findItem(R.id.action_hide_completed_tasks).isChecked =  (viewModel.getHidden() == 1)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText != null){
-                    runQuery(newText)
-                }
+                if (newText != null && !newText.isEmpty()) {
+                    viewModel.searchTitle(newText)
+                } else viewModel.updateLiveData()
                 return true
             }
-
         })
     }
 
-    fun runQuery(query: String){
-//        val searchQuery = "%$query%"
-//        viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { tasks ->
-//            adapter.submitList(tasks)
-//        }
-    }
+
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -165,10 +160,6 @@ class TaskFragment : Fragment() {
         }
         viewModel.updateHidden(isHidden)
     }
-
-//    override fun onStart() {
-//        (activity as MainActivity).supportActionBar.i
-//    }
 
 
     private  fun deleteAllItem(){

@@ -34,7 +34,6 @@
                 android:layout_marginTop="8dp"
                 tools:text = "Title"
                 android:text="@{taskItem.title}"
-                app:strikeThrough="@{false}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

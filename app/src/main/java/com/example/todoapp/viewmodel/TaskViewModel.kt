@@ -1,6 +1,8 @@
 package com.example.todoapp.viewmodel
 
 import android.app.Application
+import android.icu.text.CaseMap
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.room.Query
 import com.example.todoapp.database.TaskDatabase
@@ -36,7 +38,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateList(){
         viewModelScope.launch(Dispatchers.IO) {
-            taskList = repository.getALlTasks(isHidden).toMutableList()
+            taskList = repository.getALlTasks().toMutableList()
             updateLiveData()
         }
     }
@@ -105,8 +107,14 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         return isHidden
     }
 
-//    fun searchDatabase(searchQuery: String) List<TaskItem>>{
-//        return repository.searchDatabase(searchQuery)
-//    }
+    fun searchTitle(str : String){
+        Log.d("Title", "searchTitle: ")
+        val filtered = taskList.filter {
+            it.title.contains(str,true)
+        }
+        _taskLiveData.value = filtered
+    }
+
+
 
 }

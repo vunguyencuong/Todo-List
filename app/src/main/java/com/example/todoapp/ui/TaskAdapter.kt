@@ -1,9 +1,9 @@
 package com.example.todoapp.ui
 
-import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CompoundButton
+
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,71 +12,67 @@ import com.example.todoapp.databinding.ItemLayoutBinding
 import com.example.todoapp.util.strikeThrough
 
 
-class TaskAdapter(val clickListener: TaskClickListener, val onClickDone:(TaskItem)-> Unit): ListAdapter<TaskItem, TaskAdapter.ViewHolder>(TaskDiffCallback) {
 
-
+class TaskAdapter(val clickListener: TaskClickListener, val onClickDone: (TaskItem) -> Unit) :
+    ListAdapter<TaskItem, TaskAdapter.ViewHolder>(TaskDiffCallback) {
 
 
     companion object TaskDiffCallback : DiffUtil.ItemCallback<TaskItem>() {
-        override fun areItemsTheSame(oldItem: TaskItem, newItem: TaskItem) = oldItem.tId == newItem.tId
+        override fun areItemsTheSame(oldItem: TaskItem, newItem: TaskItem) =
+            oldItem.tId == newItem.tId
+
         override fun areContentsTheSame(oldItem: TaskItem, newItem: TaskItem) = oldItem == newItem
     }
 
-    class ViewHolder(val binding: ItemLayoutBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(taskItem: TaskItem, clickListener: TaskClickListener){
+        fun bind(taskItem: TaskItem, clickListener: TaskClickListener) {
             binding.taskItem = taskItem
+            binding.checkDone.isChecked = taskItem.isDone == 1
+            binding.taskTitle.strikeThrough(taskItem.isDone == 1)
             binding.clickListener = clickListener
             binding.executePendingBindings()
-            if(binding.checkDone.isChecked) taskItem.isDone = 1
-            else taskItem.isDone = 0
+
+            binding.checkDone.setOnClickListener { view ->
+//                taskItem.isDone = if((view as CompoundButton).isChecked) 1 else 0
+//                onClickDone(taskItem)
+                if ((view as CompoundButton).isChecked) {
+                    binding.taskTitle.strikeThrough(true)
+                } else {
+                    binding.taskTitle.strikeThrough(false)
+                }
+            }
+
         }
 
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemLayoutBinding.inflate(LayoutInflater.from(parent.context),parent, false))
+        return ViewHolder(
+            ItemLayoutBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind(current,clickListener)
-        //holder.binding.checkDone.setOnCheckedChangeListener { _, b ->
-//            if(b){
-//                current.isDone = 1
-//                holder.binding.taskTitle.strikeThrough(true)
-//            } else{
-//                current.isDone = 0
-//                holder.binding.taskTitle.strikeThrough(false)
-//            }
-//
-//            onClickDone(current)
-//        }
-
-        holder.binding.checkDone.setOnClickListener { view ->
-            if((view as CompoundButton).isChecked){
-                current.isDone = 1
-                holder.binding.taskTitle.strikeThrough(true)
-            } else{
-                current.isDone = 0
-                holder.binding.taskTitle.strikeThrough(false)
-            }
-            onClickDone(current)
-        }
-
-
+        holder.bind(current, clickListener)
     }
 
 
-    fun setData(tasks : List<TaskItem>){
+    fun setData(tasks: List<TaskItem>) {
         submitList(tasks.toList())
     }
 
 
 }
 
-class TaskClickListener(val clickListener: (taskItem : TaskItem) -> Unit){
+class TaskClickListener(val clickListener: (taskItem: TaskItem) -> Unit) {
     fun onClick(taskItem: TaskItem) = clickListener(taskItem)
 
 }
