@@ -32,4 +32,4 @@
 ## Những tính năng sắp tới sẽ update:
 - Chọn time
 - Thông báo trước 30ph khi tới time
-
+- ...
