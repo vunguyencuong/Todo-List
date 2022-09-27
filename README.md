@@ -5,6 +5,8 @@
 
 - Notes có: title, priority, timestamp, checkbox
 - Sử dụng 3 fragment và 1 activity
+- Mn có thể tải về và trải nghiệm: https://drive.google.com/drive/folders/1W2TIK1G6Waq-LZg2u_LWzJAFZuQrtKw2?usp=sharing
+
 
 ## Những tính năng đã làm được:
 - Thêm mới: Ấn dấu + từ Tasks để thêm mới 
@@ -23,9 +25,11 @@
 
 ![image](https://user-images.githubusercontent.com/88195984/192488664-74de64be-c559-4202-9ebe-9651c20f1a76.png)
 
-- Một số tính năng khác: Sort, Hide completed tasks, Delete All.
+- Một số tính năng khác: Sort, Hide completed tasks, Delete All
 
 ![image](https://user-images.githubusercontent.com/88195984/192489090-83a1663d-4599-4314-b2ae-b3429d5c24d4.png)
 
-
+## Những tính năng sắp tới sẽ update:
+- Chọn time
+- Thông báo trước 30ph khi tới time
 
