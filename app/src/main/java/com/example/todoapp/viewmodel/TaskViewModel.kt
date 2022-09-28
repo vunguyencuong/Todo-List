@@ -32,6 +32,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun updateHidden(isDone: Int){
+        Log.i("Hidden check", "updateHidden: update")
         isHidden = isDone
         updateLiveData()
     }
@@ -45,6 +46,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateLiveData(){
         viewModelScope.launch {
+            Log.i("CheckBox", "updateLiveData: ")
             if(isHidden == 0){
                 _taskLiveData.value = taskList
             } else _taskLiveData.value = filterNotDone()
@@ -76,6 +78,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateTask(newTaskItem: TaskItem){
 
+        Log.i("Checkbox", "updateTask: ${newTaskItem.tId}")
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateTask(newTaskItem)
             for(i in 0..taskList.size-1){
@@ -114,7 +117,5 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         }
         _taskLiveData.value = filtered
     }
-
-
 
 }

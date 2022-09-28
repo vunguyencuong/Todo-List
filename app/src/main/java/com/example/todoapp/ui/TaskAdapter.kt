@@ -1,5 +1,6 @@
 package com.example.todoapp.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CompoundButton
@@ -37,11 +38,15 @@ class TaskAdapter(val clickListener: TaskClickListener, val onClickDone: (TaskIt
             binding.checkDone.setOnClickListener { view ->
 //                taskItem.isDone = if((view as CompoundButton).isChecked) 1 else 0
 //                onClickDone(taskItem)
+                Log.i("CheckBox", "Checkbox: update ")
                 if ((view as CompoundButton).isChecked) {
                     binding.taskTitle.strikeThrough(true)
+                    taskItem.isDone = 1
                 } else {
                     binding.taskTitle.strikeThrough(false)
+                    taskItem.isDone = 0
                 }
+                onClickDone(taskItem)
             }
 
         }

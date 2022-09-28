@@ -3,6 +3,7 @@ package com.example.todoapp.ui
 import android.app.AlertDialog
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -43,7 +44,7 @@ class TaskFragment : Fragment() {
     }
 
 
-    private fun TaskFragment.setOnSwipeItem() {
+    private fun setOnSwipeItem() {
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -92,6 +93,7 @@ class TaskFragment : Fragment() {
         }
 
         adapter = TaskAdapter(taskOnClickListener) {
+            Log.i("CheckBox", "setUpAdapter: update ")
             viewModel.updateTask(it)
         }
         binding.recyclerView.adapter = adapter
@@ -150,6 +152,7 @@ class TaskFragment : Fragment() {
     }
 
     private fun hideCompletedTask(menuItem : MenuItem) {
+        Log.d("Hide function", "hideCompletedTask: Update")
         if(isHidden == 0) {
             isHidden = 1
             menuItem.isChecked = true
