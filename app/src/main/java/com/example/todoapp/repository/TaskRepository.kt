@@ -25,6 +25,7 @@ class TaskRepository(val taskDao: TaskDao) {
 //        return taskDao.searchDatabase(searchQuery)
 //    }
 
+    fun getAllTasksMoveToRecycleBin() : List<TaskItem> = taskDao.getAllTasksMoveToRecycleBin()
 
 
 }

@@ -21,7 +21,7 @@ fun setPriority(view: TextView, priority: Int) {
         }
         else -> {
             view.text = "Low Priority"
-            view.setTextColor(Color.GREEN)
+            view.setTextColor(Color.DKGRAY)
         }
     }
 }

@@ -6,18 +6,27 @@
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2535" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/bg_add.xml" value="0.1" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/bg_button.xml" value="0.2535" />
+        <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/bottom_nav_color.xml" value="0.252" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1" />
+        <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.252" />
+        <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.264" />
+        <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/ic_baseline_home_24_2.xml" value="0.252" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.2405" />
+        <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/ic_baseline_settings_backup_restore_24.xml" value="0.252" />
+        <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/ic_nhi_m_v_.xml" value="0.252" />
+        <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/ic_vector_task.xml" value="0.252" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/left_corner_bg.xml" value="0.1" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/drawable/rounded_button.xml" value="0.1415" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.37135416666666665" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/layout/add_task.xml" value="0.264" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/layout/fragment_add.xml" value="0.1921875" />
+        <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/layout/fragment_recycle_bin.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/layout/fragment_task.xml" value="0.1828774062816616" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/layout/fragment_update.xml" value="0.1828774062816616" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/layout/item_layout.xml" value="0.264" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/layout/toolbar.xml" value="0.2" />
+        <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/menu/nav_menu.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/ACER/TODOApp/app/src/main/res/menu/task_menu.xml" value="0.21481481481481482" />
       </map>
     </option>

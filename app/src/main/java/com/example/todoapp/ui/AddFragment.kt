@@ -44,12 +44,14 @@ class AddFragment : Fragment() {
                 val title_str = edtTask.text.toString()
                 val priority = spinnerPriorities.selectedItemPosition
                 val isDone = 0
+                val isArchived = 0
                 val taskItem = TaskItem(
                     0,
                     title_str,
                     priority,
                     System.currentTimeMillis(),
-                    isDone
+                    isDone,
+                    isArchived
                 )
 
                 viewModel.addTask(taskItem)

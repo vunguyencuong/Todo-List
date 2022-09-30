@@ -1,12 +1,10 @@
 package com.example.todoapp.ui
 
-import android.app.AlertDialog
-import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -23,7 +21,8 @@ class TaskFragment : Fragment() {
     private lateinit var viewModel: TaskViewModel
     private lateinit var binding: FragmentTaskBinding
     private lateinit var adapter: TaskAdapter
-    private var isHidden = 0
+   // private var isHidden = 0
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,13 +37,19 @@ class TaskFragment : Fragment() {
 
         setOnClickListeners()
 
+        Log.i("BugBin", "onViewCreated: Tasks")
         setOnSwipeItem()
 
+        viewModel.updateList()
 
     }
 
+//    override fun onResume() {
+//        viewModel.updateList()
+//    }
 
     private fun setOnSwipeItem() {
+        Log.i("Update Archived", "setOnSwipeItem: ")
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -56,18 +61,32 @@ class TaskFragment : Fragment() {
             ): Boolean {
                 return false
             }
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val taskItem = adapter.currentList[position]
-                viewModel.deleteTask(taskItem)
+                if(taskItem.isDone == 0){
+                    Log.i("Update Archived", "onSwiped: deleted")
+                    viewModel.deleteTask(taskItem)
 
-                Snackbar.make(binding.root, "Deleted!", Snackbar.LENGTH_LONG).apply {
-                    setAction("Undo") {
-                        viewModel.addTask(taskItem)
+                    Snackbar.make(binding.root,"${taskItem.title} has just been deleted",Snackbar.LENGTH_LONG).apply {
+                        setAction("Undo") {
+                            viewModel.addTask(taskItem)
+                        }
+                        show()
                     }
-                    show()
                 }
+                else{
+                    Log.i("Update Archived", "onSwiped: move")
+                    viewModel.moveDoneTaskToRecycleBin(taskItem)
+
+                    Toast.makeText(
+                        context,
+                        "You have already done this task!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+
             }
         }).attachToRecyclerView(binding.recyclerView)
         setHasOptionsMenu(true)
@@ -92,7 +111,7 @@ class TaskFragment : Fragment() {
             )
         }
 
-        adapter = TaskAdapter(taskOnClickListener) {
+        adapter = TaskAdapter(taskOnClickListener,1) {
             Log.i("CheckBox", "setUpAdapter: update ")
             viewModel.updateTask(it)
         }
@@ -121,9 +140,9 @@ class TaskFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.task_menu,menu)
-        val searchItem = menu.findItem(R.id.action_search)
+        val searchItem = menu.findItem(R.id.action_search_menu)
         val searchView = searchItem.actionView as SearchView
-        menu.findItem(R.id.action_hide_completed_tasks).isChecked =  (viewModel.getHidden() == 1)
+//        menu.findItem(R.id.action_hide_completed_tasks).isChecked =  (viewModel.getHidden() == 1)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -143,38 +162,38 @@ class TaskFragment : Fragment() {
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.action_sort -> viewModel.sortTask()
+            R.id.action_sort_menu -> viewModel.sortTask()
 
-            R.id.action_delete_all-> deleteAllItem()
-            R.id.action_hide_completed_tasks ->hideCompletedTask(item)
+           // R.id.action_delete_all-> deleteAllItem()
+           // R.id.action_hide_completed_tasks ->hideCompletedTask(item)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun hideCompletedTask(menuItem : MenuItem) {
-        Log.d("Hide function", "hideCompletedTask: Update")
-        if(isHidden == 0) {
-            isHidden = 1
-            menuItem.isChecked = true
+//    private fun hideCompletedTask(menuItem : MenuItem) {
+//        Log.d("Hide function", "hideCompletedTask: Update")
+//        if(isHidden == 0) {
+//            isHidden = 1
+//            menuItem.isChecked = true
+//
+//        }else {
+//            isHidden = 0
+//            menuItem.isChecked = false
+//        }
+//        viewModel.updateHidden(isHidden)
+//    }
 
-        }else {
-            isHidden = 0
-            menuItem.isChecked = false
-        }
-        viewModel.updateHidden(isHidden)
-    }
 
-
-    private  fun deleteAllItem(){
-        AlertDialog.Builder(requireContext())
-            .setTitle("Delete All")
-            .setMessage("Are you sure?")
-            .setPositiveButton("Yes"){
-                dialog, _-> viewModel.deleteAll()
-                dialog.dismiss()
-            }.setNegativeButton("No"){
-                dialog,_-> dialog.dismiss()
-            }.create().show()
-    }
+//    private  fun deleteAllItem(){
+//        AlertDialog.Builder(requireContext())
+//            .setTitle("Delete All")
+//            .setMessage("Are you sure?")
+//            .setPositiveButton("Yes"){
+//                dialog, _-> viewModel.deleteAll()
+//                dialog.dismiss()
+//            }.setNegativeButton("No"){
+//                dialog,_-> dialog.dismiss()
+//            }.create().show()
+//    }
 
 }

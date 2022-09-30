@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.todoapp.R
 import com.example.todoapp.databinding.ActivityMainBinding
 
@@ -33,10 +34,12 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.taskFragment,
                 R.id.addFragment,
-                R.id.updateFragment
+                R.id.updateFragment,
+                R.id.recycleBinFragment
             )
         )
         setupActionBarWithNavController(navController,appBarConfiguration)
+        binding.bottomNav.setupWithNavController(navController)
     }
 
 }

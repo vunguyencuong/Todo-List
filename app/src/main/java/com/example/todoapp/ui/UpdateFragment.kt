@@ -44,7 +44,8 @@ class UpdateFragment : Fragment() {
                     task_str.toString(),
                     priority,
                     args.taskItem.timestamp,
-                    args.taskItem.isDone
+                    args.taskItem.isDone,
+                    args.taskItem.isArchived
                 )
 
                 viewModel.updateTask(taskItem)

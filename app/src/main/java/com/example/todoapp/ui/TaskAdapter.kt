@@ -2,6 +2,7 @@ package com.example.todoapp.ui
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 
@@ -14,7 +15,7 @@ import com.example.todoapp.util.strikeThrough
 
 
 
-class TaskAdapter(val clickListener: TaskClickListener, val onClickDone: (TaskItem) -> Unit) :
+class TaskAdapter(val clickListener: TaskClickListener, val isCheckBoxShow: Int,val onClickDone: (TaskItem) -> Unit) :
     ListAdapter<TaskItem, TaskAdapter.ViewHolder>(TaskDiffCallback) {
 
 
@@ -46,6 +47,20 @@ class TaskAdapter(val clickListener: TaskClickListener, val onClickDone: (TaskIt
                     binding.taskTitle.strikeThrough(false)
                     taskItem.isDone = 0
                 }
+                onClickDone(taskItem)
+            }
+
+            if(isCheckBoxShow == 1){
+                binding.btnComeback.visibility = View.GONE
+                binding.checkDone.visibility = View.VISIBLE
+            }
+            else {
+                binding.btnComeback.visibility = View.VISIBLE
+                binding.checkDone.visibility = View.GONE
+            }
+
+            binding.btnComeback.setOnClickListener{
+                Log.i("Comeback", "bind: ")
                 onClickDone(taskItem)
             }
 

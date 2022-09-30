@@ -54,4 +54,12 @@
             android:name="taskItem"
             app:argType="com.example.todoapp.database.TaskItem" />
     </fragment>
+    <fragment
+        android:id="@+id/recycleBinFragment"
+        android:name="com.example.todoapp.ui.RecycleBinFragment"
+        android:label="Recycle Bin" >
+        <action
+            android:id="@+id/action_recycleBinFragment_to_taskFragment"
+            app:destination="@id/taskFragment" />
+    </fragment>
 </navigation>

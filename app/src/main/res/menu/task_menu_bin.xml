@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_search_bin"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="Search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom" />
+
+
+    <item
+        android:id="@+id/action_sort_bin"
+        android:title="Sort by High Priority"
+        app:showAsAction="never"/>
+
+<!--    <item-->
+<!--        android:id="@+id/action_hide_completed_tasks"-->
+<!--        android:checkable="true"-->
+<!--        android:title="Hide completed"-->
+<!--        app:showAsAction="never"/>-->
+
+
+    <item
+        android:id="@+id/action_delete_all_bin"
+        android:title="Delete all"
+        app:showAsAction="never" />
+</menu>

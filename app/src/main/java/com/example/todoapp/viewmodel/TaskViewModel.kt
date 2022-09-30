@@ -5,6 +5,7 @@ import android.icu.text.CaseMap
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.room.Query
+import androidx.room.Update
 import com.example.todoapp.database.TaskDatabase
 import com.example.todoapp.database.TaskItem
 import com.example.todoapp.repository.TaskRepository
@@ -18,7 +19,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val taskDao = TaskDatabase.getDatabase(application).taskDao()
     private val repository  = TaskRepository(taskDao)
     private var isHidden = 0
-
+    var isArchived  = 0
 
     private lateinit var  taskList : MutableList<TaskItem>
     private val _taskLiveData by lazy {
@@ -30,23 +31,35 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     val taskLiveData : LiveData<List<TaskItem>> = _taskLiveData
 
 
+//
+//    fun setDoneItemVisibility(isDone: Int){
+//       // Log.i("Hidden check", "updateHidden: update")
+//        isHidden = isDone
+//        updateLiveData()
+//    }
 
-    fun updateHidden(isDone: Int){
-        Log.i("Hidden check", "updateHidden: update")
-        isHidden = isDone
-        updateLiveData()
-    }
+
 
     fun updateList(){
         viewModelScope.launch(Dispatchers.IO) {
             taskList = repository.getALlTasks().toMutableList()
             updateLiveData()
+            isArchived = 0
+        }
+    }
+
+    fun updateRecycleBinList(){
+        Log.i("BugBin", "updateRecycleBinList: ")
+        viewModelScope.launch(Dispatchers.IO){
+            taskList = repository.getAllTasksMoveToRecycleBin().toMutableList()
+            updateLiveData()
+            isArchived = 1
         }
     }
 
     fun updateLiveData(){
         viewModelScope.launch {
-            Log.i("CheckBox", "updateLiveData: ")
+            Log.i("BugBin", "updateLiveData: ")
             if(isHidden == 0){
                 _taskLiveData.value = taskList
             } else _taskLiveData.value = filterNotDone()
@@ -60,7 +73,9 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
     fun addTask(taskItem: TaskItem){
+        Log.i("BugBin", "addTask: ${isArchived}")
         viewModelScope.launch(Dispatchers.IO) {
             repository.addTask(taskItem)
             taskList.add(taskItem)
@@ -76,6 +91,17 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun moveDoneTaskToRecycleBin(taskItem: TaskItem){
+        viewModelScope.launch(Dispatchers.IO){
+            Log.i("Update Archived", "moveDoneTaskToRecycleBin: ${taskItem.isArchived}")
+            taskItem.isArchived = 1
+            repository.updateTask(taskItem)
+            taskList.remove(taskItem)
+            updateLiveData()
+
+        }
+    }
+
     fun updateTask(newTaskItem: TaskItem){
 
         Log.i("Checkbox", "updateTask: ${newTaskItem.tId}")
@@ -87,6 +113,15 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
                     break
                 }
             }
+            updateLiveData()
+        }
+    }
+
+    fun unArchivedTask(taskItem: TaskItem){
+        viewModelScope.launch(Dispatchers.IO){
+           // taskItem.isArchived = 0
+            repository.updateTask(taskItem)
+            taskList.remove(taskItem)
             updateLiveData()
         }
     }
@@ -106,9 +141,9 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         updateLiveData()
     }
 
-    fun getHidden() : Int{
-        return isHidden
-    }
+//    fun getHidden() : Int{
+//        return isHidden
+//    }
 
     fun searchTitle(str : String){
         Log.d("Title", "searchTitle: ")
@@ -117,5 +152,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         }
         _taskLiveData.value = filtered
     }
+
+
 
 }

@@ -13,5 +13,6 @@ data class TaskItem(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "priority") val priority: Int,
     @ColumnInfo(name = "timestamp") val timestamp: Long,
-    @ColumnInfo(name = "isDone") var isDone: Int
+    @ColumnInfo(name = "isDone") var isDone: Int,
+    @ColumnInfo(name = "isArchived") var isArchived: Int
 ) : Parcelable
