@@ -1,8 +1,7 @@
 # Todo-List
 ## Sản phẩm ToDo-App Android bằng ngôn ngữ Kotlin sau khóa học cơ bản về Mobile của ProPTIT.
 
-![image](https://user-images.githubusercontent.com/88195984/193399230-32adfa73-d698-43f2-b4e5-95d89271ba03.png)
-![image](https://user-images.githubusercontent.com/88195984/193399244-27078195-0054-455e-9d38-15c3ec4ccf43.png)
+![image](https://user-images.githubusercontent.com/88195984/193399230-32adfa73-d698-43f2-b4e5-95d89271ba03.png) ![image](https://user-images.githubusercontent.com/88195984/193399244-27078195-0054-455e-9d38-15c3ec4ccf43.png)
 
 
 - Notes có: title, priority, timestamp, checkbox
