@@ -1,11 +1,11 @@
 package com.example.todoapp.viewmodel
 
 import android.app.Application
-import android.icu.text.CaseMap
 import android.util.Log
-import androidx.lifecycle.*
-import androidx.room.Query
-import androidx.room.Update
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.todoapp.database.TaskDatabase
 import com.example.todoapp.database.TaskItem
 import com.example.todoapp.repository.TaskRepository
@@ -19,7 +19,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val taskDao = TaskDatabase.getDatabase(application).taskDao()
     private val repository  = TaskRepository(taskDao)
     private var isHidden = 0
-    var isArchived  = 0
+    private var isArchived  = 0
 
     private lateinit var  taskList : MutableList<TaskItem>
     private val _taskLiveData by lazy {
@@ -67,7 +67,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun filterNotDone () : List<TaskItem> {
+    private fun filterNotDone () : List<TaskItem> {
          return taskList.filter {
             it.isDone == 0
         }
@@ -75,7 +75,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun addTask(taskItem: TaskItem){
-        Log.i("BugBin", "addTask: ${isArchived}")
+        Log.i("BugBin", "addTask: ")
         viewModelScope.launch(Dispatchers.IO) {
             repository.addTask(taskItem)
             taskList.add(taskItem)
@@ -107,7 +107,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         Log.i("Checkbox", "updateTask: ${newTaskItem.tId}")
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateTask(newTaskItem)
-            for(i in 0..taskList.size-1){
+            for(i in 0 until taskList.size){
                 if(taskList[i].tId == newTaskItem.tId){
                     taskList[i] = newTaskItem
                     break

@@ -2,31 +2,31 @@ package com.example.todoapp.ui
 
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.todoapp.R
 import com.example.todoapp.database.TaskItem
 import com.example.todoapp.databinding.FragmentAddBinding
 import com.example.todoapp.viewmodel.TaskViewModel
-import android.widget.ArrayAdapter as ArrayAdapter
 
 class AddFragment : Fragment() {
 
-    private val viewModel: TaskViewModel by viewModels()
+    private val viewModel: TaskViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding = FragmentAddBinding.inflate(inflater)
 
-        val myAdapter = ArrayAdapter<String>(
+        val myAdapter = ArrayAdapter(
             requireActivity(),
             android.R.layout.simple_spinner_dropdown_item,
             resources.getStringArray(R.array.priorities)
@@ -41,13 +41,13 @@ class AddFragment : Fragment() {
                     return@setOnClickListener
                 }
 
-                val title_str = edtTask.text.toString()
+                val titleStr = edtTask.text.toString()
                 val priority = spinnerPriorities.selectedItemPosition
                 val isDone = 0
                 val isArchived = 0
                 val taskItem = TaskItem(
                     0,
-                    title_str,
+                    titleStr,
                     priority,
                     System.currentTimeMillis(),
                     isDone,

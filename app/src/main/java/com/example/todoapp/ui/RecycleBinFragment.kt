@@ -4,17 +4,13 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
-import com.example.todoapp.database.TaskItem
 import com.example.todoapp.databinding.FragmentRecycleBinBinding
-import com.example.todoapp.databinding.FragmentTaskBinding
 import com.example.todoapp.viewmodel.TaskViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -23,11 +19,11 @@ class RecycleBinFragment : Fragment() {
 
     private lateinit var binding: FragmentRecycleBinBinding
     private lateinit var adapter: TaskAdapter
-    private lateinit var viewModel: TaskViewModel
-
+    //private lateinit var viewModel : TaskViewModel
+    private val viewModel: TaskViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setUpViewModel()
+        //setUpViewModel()
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
@@ -39,16 +35,16 @@ class RecycleBinFragment : Fragment() {
 
     }
 
-    private fun setUpViewModel() {
-        viewModel =
-            ViewModelProvider(
-                this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-            )[TaskViewModel::class.java]
-    }
+//    private fun setUpViewModel() {
+//        viewModel =
+//            ViewModelProvider(
+//                requireActivity(),
+//                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+//            )[TaskViewModel::class.java]
+//    }
 
     private fun setUpAdapter() {
-        val taskOnClickListener = TaskClickListener { taskItem -> }
+        val taskOnClickListener = TaskClickListener { }
 
         adapter = TaskAdapter(taskOnClickListener,0) {
             Log.i("CheckBox", "setUpAdapter: update ")
@@ -99,7 +95,7 @@ class RecycleBinFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentRecycleBinBinding.inflate(inflater,container,false)
         return binding.root
@@ -118,7 +114,7 @@ class RecycleBinFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null && !newText.isEmpty()) {
+                if (newText != null && newText.isNotEmpty()) {
                     viewModel.searchTitle(newText)
                 } else viewModel.updateLiveData()
                 return true
@@ -152,3 +148,4 @@ class RecycleBinFragment : Fragment() {
     }
 
 }
+

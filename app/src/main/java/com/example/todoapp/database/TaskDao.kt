@@ -1,8 +1,5 @@
 package com.example.todoapp.database
 
-import android.os.FileObserver.DELETE
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 
 @Dao

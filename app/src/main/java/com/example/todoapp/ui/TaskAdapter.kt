@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
-
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,8 +13,7 @@ import com.example.todoapp.databinding.ItemLayoutBinding
 import com.example.todoapp.util.strikeThrough
 
 
-
-class TaskAdapter(val clickListener: TaskClickListener, val isCheckBoxShow: Int,val onClickDone: (TaskItem) -> Unit) :
+class TaskAdapter(private val clickListener: TaskClickListener, val isCheckBoxShow: Int, val onClickDone: (TaskItem) -> Unit) :
     ListAdapter<TaskItem, TaskAdapter.ViewHolder>(TaskDiffCallback) {
 
 

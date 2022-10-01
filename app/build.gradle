@@ -83,6 +83,8 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
 
+    implementation "androidx.fragment:fragment-ktx:1.5.3"
+
 
 
 }

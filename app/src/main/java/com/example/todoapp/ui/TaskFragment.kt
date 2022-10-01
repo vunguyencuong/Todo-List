@@ -121,7 +121,7 @@ class TaskFragment : Fragment() {
     private fun setUpViewModel() {
         viewModel =
             ViewModelProvider(
-                this,
+                requireActivity(),
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
             )[TaskViewModel::class.java]
     }
@@ -149,7 +149,7 @@ class TaskFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null && !newText.isEmpty()) {
+                if (newText != null && newText.isNotEmpty()) {
                     viewModel.searchTitle(newText)
                 } else viewModel.updateLiveData()
                 return true

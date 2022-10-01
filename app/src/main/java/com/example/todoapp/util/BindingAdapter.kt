@@ -1,12 +1,13 @@
 package com.example.todoapp.util
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import java.security.Timestamp
 import java.text.DateFormat
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("setPriority")
 
 fun setPriority(view: TextView, priority: Int) {
