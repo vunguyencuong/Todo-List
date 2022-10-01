@@ -1,7 +1,9 @@
 # Todo-List
 ## Sản phẩm ToDo-App Android bằng ngôn ngữ Kotlin sau khóa học cơ bản về Mobile của ProPTIT.
 
-![image](https://user-images.githubusercontent.com/88195984/192488338-a86a43b5-0236-40c9-8401-5c89ff287adb.png)
+![image](https://user-images.githubusercontent.com/88195984/193399230-32adfa73-d698-43f2-b4e5-95d89271ba03.png)
+![image](https://user-images.githubusercontent.com/88195984/193399244-27078195-0054-455e-9d38-15c3ec4ccf43.png)
+
 
 - Notes có: title, priority, timestamp, checkbox
 - Sử dụng 3 fragment và 1 activity
@@ -9,27 +11,17 @@
 
 
 ## Những tính năng đã làm được:
-- Thêm mới: Ấn dấu + từ Tasks để thêm mới 
-
-![image](https://user-images.githubusercontent.com/88195984/192487271-d4a6fc38-7f90-42e5-88bf-063071a8f6f0.png)
-
-- Sửa: Click vào task để thực hiện sửa 
-
-![image](https://user-images.githubusercontent.com/88195984/192487468-7cbfefa5-113a-450d-a56f-e1dbc96cefa2.png)
-
-- Xóa: Vuốt task từ trái sang phải hoặc ngược lại
-
-![image](https://user-images.githubusercontent.com/88195984/192487658-4c4c3a09-0344-4e16-bfae-ffd2b9c871b3.png)
-
+- Add: Ấn dấu + từ Tasks để thêm mới 
+- Update: Click vào task để thực hiện sửa 
+- Delete: Vuốt task từ trái sang phải hoặc ngược lại
 - Search
+- Sort
+- Recycler Bin
+- Restore từ Recycler Bin về Tasks
+- Delete all
 
-![image](https://user-images.githubusercontent.com/88195984/192488664-74de64be-c559-4202-9ebe-9651c20f1a76.png)
-
-- Một số tính năng khác: Sort, Hide completed tasks, Delete All
-
-![image](https://user-images.githubusercontent.com/88195984/192489090-83a1663d-4599-4314-b2ae-b3429d5c24d4.png)
-
-## Những tính năng sắp tới sẽ update:
-- Chọn time
-- Thông báo trước 30ph khi tới time
-- ...
+##Những kiến thức đã sử dụng:
+- Sử dụng Bottom Navigation để chuyển các fragment
+- Sử dử dụng Room Databse, Livedata cho các thao tác: add, update,...
+- Sử dụng Recycler View để hiện thị các Tasks
+- Callback tại adapter
